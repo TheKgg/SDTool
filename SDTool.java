@@ -391,13 +391,15 @@ public class SDTool extends JPanel {
 								if(fs!=null && fs.length>0)
 								for(File ini : fs) {
 									try {
-										Files.move(ini.toPath(), Paths.get(ini.toString().split(Pattern.quote("."))[0]+".ini"));
-									} catch (IOException e) {
+										if(!ini.renameTo(new File(ini.toString().split(Pattern.quote("."))[0]+".ini"))) {
+											pop("Failed renaming "+ini.getName());
+										}
+									} catch (Exception e) {
 										e.printStackTrace();
 									}
 								}
 								clipboard=dr.toString().substring(0,1);
-								pop("Ready.\nI also fixed your ini files.");
+								pop(fs!=null && fs.length>0 ? "Ready.\nI also fixed your ini files." : "Ready");
 							}
 						}
 						loadCard();
